@@ -65,4 +65,5 @@ public class GameController {
         //lblScore.setText("Points: " + GameManager.getInstance().getScore());
     }
 
+
 }
