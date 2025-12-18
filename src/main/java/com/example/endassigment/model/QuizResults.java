@@ -3,10 +3,18 @@ package com.example.endassigment.model;
 import java.util.List;
 
 public class QuizResults {
+
+    private String quizId;
+    private String name;
+    private List<PlayerResult> playersResults;
+
     public QuizResults(String quizId, String name, List<PlayerResult> playersResults) {
         this.quizId = quizId;
         this.name = name;
         this.playersResults = playersResults;
+    }
+
+    public QuizResults() {
     }
 
     public String getQuizId() {
@@ -33,7 +41,4 @@ public class QuizResults {
         this.playersResults = playersResults;
     }
 
-    private String quizId;
-    private String name;
-    private List<PlayerResult> playersResults;
 }

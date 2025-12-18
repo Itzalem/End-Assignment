@@ -16,6 +16,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 })
 
 public class Element {
+    private String type;
+    private String name;
+    private String title;
+    private boolean isRequired;
+
     public Element() {
     }
 
@@ -54,14 +59,11 @@ public class Element {
         return isRequired;
     }
 
-    public void setRequired(boolean required) {
+    public void setIsRequired(boolean required) {
         isRequired = required;
     }
 
-    private String type;
-    private String name;
-    private String title;
-    private boolean isRequired;
+
 
 
 

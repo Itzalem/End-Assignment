@@ -3,12 +3,19 @@ package com.example.endassigment.model;
 import java.time.LocalDateTime;
 
 public class PlayerResult {
+    private String playerName;
+    private int totalQuestions;
+    private int correctQuestions;
+    private LocalDateTime date;
 
     public PlayerResult(String playerName, int totalQuestions, int correctQuestions, LocalDateTime date) {
         this.playerName = playerName;
         this.totalQuestions = totalQuestions;
         this.correctQuestions = correctQuestions;
         this.date = date;
+    }
+
+    public PlayerResult() {
     }
 
     public String getPlayerName() {
@@ -43,8 +50,5 @@ public class PlayerResult {
         this.date = date;
     }
 
-    private String playerName;
-    private int totalQuestions;
-    private int correctQuestions;
-    private LocalDateTime date;
+
 }

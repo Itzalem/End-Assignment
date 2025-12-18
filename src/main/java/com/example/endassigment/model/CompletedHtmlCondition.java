@@ -1,9 +1,15 @@
 package com.example.endassigment.model;
 
 public class CompletedHtmlCondition {
+    private String expression;
+    private String html;
+
     public CompletedHtmlCondition(String expression, String html) {
         this.expression = expression;
         this.html = html;
+    }
+
+    public CompletedHtmlCondition() {
     }
 
     public String getHtml() {
@@ -21,8 +27,4 @@ public class CompletedHtmlCondition {
     public void setExpression(String expression) {
         this.expression = expression;
     }
-
-    private String expression;
-    private String html;
-
 }

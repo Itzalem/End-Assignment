@@ -9,4 +9,7 @@ module com.example.endassigment {
     exports com.example.endassigment;
 
     opens com.example.endassigment.controllers to javafx.fxml;
+
+    opens com.example.endassigment.model to com.fasterxml.jackson.databind;
+
 }

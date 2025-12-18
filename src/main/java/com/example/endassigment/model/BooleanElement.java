@@ -36,6 +36,10 @@ public BooleanElement(String labelTrue, String labelFalse, boolean correctAnswer
     this.correctAnswer = correctAnswer;
 }
 
+public BooleanElement() {
+
+}
+
 }
 
 

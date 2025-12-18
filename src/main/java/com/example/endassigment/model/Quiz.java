@@ -3,6 +3,12 @@ package com.example.endassigment.model;
 import java.util.List;
 
 public class Quiz {
+    private String title;
+    private String description;
+    private List<Page> pages;
+
+    private String completedHtml;
+    private List<CompletedHtmlCondition> completedHtmlCondition;
 
     public Quiz(String title, String description, List<Page> pages, String completedHtml, List<CompletedHtmlCondition> completedHtmlCondition) {
         this.title = title;
@@ -10,6 +16,9 @@ public class Quiz {
         this.pages = pages;
         this.completedHtml = completedHtml;
         this.completedHtmlCondition = completedHtmlCondition;
+    }
+
+    public Quiz() {
     }
 
     public String getTitle() {
@@ -52,10 +61,5 @@ public class Quiz {
         this.completedHtmlCondition = completedHtmlCondition;
     }
 
-    private String title;
-    private String description;
-    private List<Page> pages;
 
-    private String completedHtml;
-    private List<CompletedHtmlCondition> completedHtmlCondition;
 }
