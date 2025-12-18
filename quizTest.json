@@ -1,0 +1,59 @@
+{
+  "title": "Cuestionario de Prueba Java",
+  "description": "Un quiz simple para verificar que el FileChooser y Jackson funcionan correctamente.",
+  "pages": [
+    {
+      "timeLimit": 30,
+      "elements": [
+        {
+          "type": "radiogroup",
+          "name": "q1",
+          "title": "¿Cuál es la extensión de un archivo compilado de Java?",
+          "choicesOrder": "random",
+          "choices": [
+            ".java",
+            ".class",
+            ".jar",
+            ".exe"
+          ],
+          "correctAnswer": ".class",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "timeLimit": 15,
+      "elements": [
+        {
+          "type": "boolean",
+          "name": "q2",
+          "title": "Java es lo mismo que JavaScript.",
+          "labelTrue": "Verdadero",
+          "labelFalse": "Falso",
+          "correctAnswer": false,
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "timeLimit": 20,
+      "elements": [
+        {
+          "type": "radiogroup",
+          "name": "q3",
+          "title": "¿Qué palabra clave se usa para crear un objeto?",
+          "choicesOrder": "random",
+          "choices": [
+            "create",
+            "make",
+            "new",
+            "object"
+          ],
+          "correctAnswer": "new",
+          "isRequired": true
+        }
+      ]
+    }
+  ],
+  "completedHtml": "Has terminado."
+}

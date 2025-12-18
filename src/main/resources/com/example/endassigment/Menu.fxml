@@ -5,9 +5,6 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.endassigment.controllers.MenuController">
    <children>
-      <HBox layoutX="210.0" layoutY="150.0" prefHeight="100.0" prefWidth="200.0">
-         <children>
-            <Label text="Label" />
-         </children></HBox>
+      <Button layoutX="262.0" layoutY="270.0" mnemonicParsing="false" text="Load Quiz" onAction="#onLoadQuiz"/>
    </children>
 </AnchorPane>
