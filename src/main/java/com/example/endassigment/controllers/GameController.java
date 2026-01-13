@@ -43,6 +43,9 @@ public class GameController {
         String name = playerName.getText();
 
         if (name != null && !name.trim().isEmpty()) {
+            GameManager.getInstance().setPlayerName(name);
+            GameManager.getInstance().setScore(0);
+
             nameBox.setVisible(false);
             questionBox.setVisible(true);
 
