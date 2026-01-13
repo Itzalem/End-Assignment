@@ -3,13 +3,12 @@ package com.example.endassigment.model;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-// Le dice a Jackson: "Mira el campo 'type' para saber qué hijo crear"
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
         property = "type"
 )
-// Mapea el texto del JSON a tus clases Java
+
 @JsonSubTypes({
         @JsonSubTypes.Type(value = RadiogroupElement.class, name = "radiogroup"),
         @JsonSubTypes.Type(value = BooleanElement.class, name = "boolean")
