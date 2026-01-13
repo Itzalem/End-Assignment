@@ -18,7 +18,7 @@
          <Label fx:id="labelTitle" text="Title" />
 
       <VBox fx:id="answersBox" prefHeight="200.0" prefWidth="100.0" />
-       <Button mnemonicParsing="false" text="Button" />
+       <Button mnemonicParsing="false" text="Next Question" onAction="#onNextClicked" />
    </VBox>
 
 </AnchorPane>

@@ -24,6 +24,7 @@ public class GameController {
 
     private ToggleGroup toggleGroup;
     private Element currentQuestion;
+    private int currentPageIndex = 0;
 
     @FXML
     public void initialize() {
@@ -45,20 +46,36 @@ public class GameController {
             nameBox.setVisible(false);
             questionBox.setVisible(true);
 
-            Quiz quiz = GameManager.getInstance().getCurrentQuiz();
-
-            if (quiz != null && !quiz.getPages().isEmpty()) {
-                Page firstPage = quiz.getPages().getFirst();
-
-                if (!firstPage.getElements().isEmpty()) {
-                    Element firstQuestion = firstPage.getElements().getFirst();
-
-                    displayQuestion(firstQuestion);
-                }
-            }
+            loadQuestion();
         }
     }
 
+    @FXML
+    public void loadQuestion() {
+        Quiz quiz = GameManager.getInstance().getCurrentQuiz();
+
+        if (quiz != null && currentPageIndex < quiz.getPages().size()) {
+
+            Page page = quiz.getPages().get(currentPageIndex);
+
+            if (!page.getElements().isEmpty()) {
+                Element question = page.getElements().getFirst();
+                displayQuestion(question);
+            }
+        }
+        else {
+            labelTitle.setText("Quiz Finished");
+            answersBox.getChildren().clear();
+        }
+    }
+
+    @FXML
+    public void onNextClicked() {
+        currentPageIndex++;
+        loadQuestion();
+    }
+
+    @FXML
     private void displayQuestion(Element question) {
         this.currentQuestion = question;
 
