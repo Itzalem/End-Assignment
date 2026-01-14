@@ -21,5 +21,6 @@
          <Font name="System Bold Italic" size="22.0" />
       </font></Label>
    <Label layoutX="203.0" layoutY="95.0" text="Please load your quizz to start " />
+   <Label fx:id="labelQuizLoaded" alignment="CENTER" contentDisplay="CENTER" layoutX="173.0" layoutY="262.0" prefHeight="18.0" prefWidth="221.0" text="Quiz Title" textAlignment="CENTER" visible="false" />
 
 </AnchorPane>

@@ -170,18 +170,16 @@ public class GameController {
 
             PlayerResult playerResult = new PlayerResult(playerName, totalQuestions, score, LocalDateTime.now());
 
-            writeJsonResult(playerResult);
-
+            writeResultsToJson(playerResult);
             changeResultsScreen();
-
         }
         catch (IOException ioe) {
             ioe.printStackTrace();
-            System.out.println("Error saving results");
+            labelTitle.setText("Sorry, an error happened trying to save your results. Restart the quiz please.");
         }
     }
 
-    private void writeJsonResult(PlayerResult newResult) throws IOException {
+    private void writeResultsToJson(PlayerResult newResult) throws IOException {
         String quizId = GameManager.getInstance().getCurrentQuizId();
 
         File file = new File(quizId + "-results.json");
@@ -208,6 +206,10 @@ public class GameController {
     }
 
     private void changeResultsScreen() throws IOException {
+        if (getClass().getResource("/com/example/endassigment/Results.fxml") == null) {
+            throw new IOException("Results file not found");
+        }
+
         Parent root = FXMLLoader.load(getClass().getResource("/com/example/endassigment/Results.fxml"));
         Stage stage = (Stage) buttonNext.getScene().getWindow();
         stage.setScene(new Scene(root));
@@ -266,11 +268,17 @@ public class GameController {
         if (question instanceof RadiogroupElement) {
             RadiogroupElement radiogroupQuestion = (RadiogroupElement) question;
 
-            for (String textOption : radiogroupQuestion.getChoices()) {
-                RadioButton button = new RadioButton(textOption);
-                button.setToggleGroup(toggleGroup);
+            if (radiogroupQuestion.getChoices() != null) {
+                for (String textOption : radiogroupQuestion.getChoices()) {
+                    RadioButton button = new RadioButton(textOption);
+                    button.setToggleGroup(toggleGroup);
 
-                answersBox.getChildren().add(button);
+                    answersBox.getChildren().add(button);
+                }
+            }
+            else {
+                Label labelError = new Label("Ups, no options for this question. Continue to the next one please.");
+                answersBox.getChildren().add(labelError);
             }
         }
         //boolean question

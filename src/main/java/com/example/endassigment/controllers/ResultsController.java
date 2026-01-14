@@ -28,6 +28,10 @@ public class ResultsController {
             File file = new File(quizId + "-results.json");
 
             if (file.exists()) {
+                if (file.length() == 0) {
+                    resultsTextArea.setText("Sorry, the results file is empty. Please restart the quiz");
+                    return;
+                }
                 ObjectMapper mapper = new ObjectMapper();
                 mapper.registerModule(new JavaTimeModule());
 
@@ -46,12 +50,12 @@ public class ResultsController {
                 }
             }
             else {
-                resultsTextArea.setText("No results found");
+                resultsTextArea.setText("No file found");
             }
 
-        } catch (Exception e) {
-            resultsTextArea.setText("Error loading results");
-            e.printStackTrace();
+        } catch (IOException ioe) {
+            resultsTextArea.setText("Error loading results, the file could be damaged or corrupted");
+            ioe.printStackTrace();
         }
     }
 
