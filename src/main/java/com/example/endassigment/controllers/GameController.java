@@ -124,5 +124,6 @@ public class GameController {
             answersBox.getChildren().add(buttonFalse);
         }
     }
+
 }
 
