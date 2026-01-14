@@ -7,6 +7,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 
 public class GameController {
     @FXML
@@ -21,9 +24,13 @@ public class GameController {
     public VBox answersBox;
     @FXML
     public Label labelScore;
+    @FXML
+    public Label labelTimer;
 
     private ToggleGroup toggleGroup;
     private Element currentQuestion;
+    private Timeline timeline;
+    private int timeSeconds;
 
     @FXML
     public void initialize() {
@@ -66,23 +73,55 @@ public class GameController {
 
             Page page = quiz.getPages().get(currentQuestionIndex);
 
+            int limit = page.getTimeLimit();
+            startTimer(limit);
+
             if (!page.getElements().isEmpty()) {
                 Element question = page.getElements().getFirst();
                 displayQuestion(question);
             }
         }
         else {
+            timeline.stop();
+
             labelTitle.setText("Quiz Finished");
             answersBox.getChildren().clear();
+
+            labelTimer.setText("");
         }
+    }
+
+    private void startTimer(int seconds) {
+        if (timeline != null) {
+            timeline.stop();
+        }
+
+        this.timeSeconds = seconds;
+        labelTimer.setText("" + timeSeconds);
+
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            timeSeconds--;
+            labelTimer.setText("" + timeSeconds);
+
+            //if 0 go to next question
+            if (timeSeconds <= 0) {
+                timeline.stop();
+
+                onNextClicked();
+            }
+        }));
+
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
     }
 
     @FXML
     public void onNextClicked() {
         checkAnswer();
 
-        int currentQuestionIndex = GameManager.getInstance().getCurrentQuestionIndex();
+        timeline.stop();
 
+        int currentQuestionIndex = GameManager.getInstance().getCurrentQuestionIndex();
         GameManager.getInstance().setCurrentQuestionIndex(currentQuestionIndex + 1);
 
         loadQuestion();

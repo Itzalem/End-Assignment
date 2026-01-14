@@ -15,11 +15,12 @@
    </VBox>
 
    <VBox fx:id="questionBox" alignment="CENTER_LEFT" layoutX="98.0" layoutY="82.0" prefHeight="245.0" prefWidth="388.0" visible="false">
+      <Label fx:id="labelTimer" text="Time: " />
        <Label fx:id="labelScore" text="Score" />
        <Label fx:id="labelTitle" text="Title" />
 
       <VBox fx:id="answersBox" prefHeight="200.0" prefWidth="100.0" />
-       <Button mnemonicParsing="false" text="Next Question" onAction="#onNextClicked" />
+       <Button mnemonicParsing="false" onAction="#onNextClicked" text="Next Question" />
    </VBox>
 
 </AnchorPane>
