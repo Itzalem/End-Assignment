@@ -1,14 +1,12 @@
 package com.example.endassigment.controllers;
 
 import com.example.endassigment.model.*;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
-
 
 public class GameController {
     @FXML
@@ -21,6 +19,8 @@ public class GameController {
     public Label labelTitle;
     @FXML
     public VBox answersBox;
+    @FXML
+    public Label labelScore;
 
     private ToggleGroup toggleGroup;
     private Element currentQuestion;
@@ -35,6 +35,10 @@ public class GameController {
         if (quiz != null) {
             System.out.println("Game on" + quiz.getTitle());
         }
+
+        labelScore.textProperty().bind(
+                GameManager.getInstance().scoreProperty().asString("Score: %d")
+        );
     }
 
     @FXML
@@ -75,11 +79,51 @@ public class GameController {
 
     @FXML
     public void onNextClicked() {
+        checkAnswer();
+
         int currentQuestionIndex = GameManager.getInstance().getCurrentQuestionIndex();
 
         GameManager.getInstance().setCurrentQuestionIndex(currentQuestionIndex + 1);
 
         loadQuestion();
+    }
+
+    private void checkAnswer() {
+        boolean isCorrect = false;
+
+        if (toggleGroup.getSelectedToggle() == null) {
+            return;
+        }
+
+        RadioButton selectedRadioAnswer = (RadioButton) toggleGroup.getSelectedToggle();
+        String questionAnswer = selectedRadioAnswer.getText();
+
+        Element currentQuestion = GameManager.getInstance().getCurrentQuiz()
+                .getPages().get(GameManager.getInstance().getCurrentQuestionIndex())
+                .getElements().getFirst();
+
+        if (currentQuestion instanceof RadiogroupElement) {
+            RadiogroupElement question = (RadiogroupElement) currentQuestion;
+
+            if (questionAnswer.equals(question.getCorrectAnswer())) {
+                isCorrect = true;
+            }
+        }
+        else if (currentQuestion instanceof BooleanElement) {
+            BooleanElement question = (BooleanElement) currentQuestion;
+
+            if (question.isCorrectAnswer() && questionAnswer.equals(question.getLabelTrue())) {
+                isCorrect = true;
+            }
+
+            else if (!question.isCorrectAnswer() && questionAnswer.equals(question.getLabelFalse())) {
+                isCorrect = true;
+            }
+        }
+
+        if (isCorrect) {
+            GameManager.getInstance().addScore(1);
+        }
     }
 
     @FXML

@@ -1,15 +1,17 @@
 package com.example.endassigment.model;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+
 public class GameManager {
 private static GameManager instance;
 
 private Quiz currentQuiz;
         private String playerName;
-        private int score;
+        private final IntegerProperty score = new SimpleIntegerProperty(0); //observable
         private int currentQuestionIndex;
 
         private GameManager() {
-            this.score = 0;
             this.currentQuestionIndex = 0;
         }
 
@@ -36,11 +38,20 @@ private Quiz currentQuiz;
     }
 
     public int getScore() {
-        return score;
+        return score.get();
     }
 
     public void setScore(int score) {
-        this.score = score;
+        this.score.set(score);
+    }
+
+
+    public IntegerProperty scoreProperty() {
+        return score;
+    }
+
+    public void addScore(int points) {
+        this.score.set(this.score.get() + points);
     }
 
     public int getCurrentQuestionIndex() {
