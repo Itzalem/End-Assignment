@@ -24,7 +24,6 @@ public class GameController {
 
     private ToggleGroup toggleGroup;
     private Element currentQuestion;
-    private int currentPageIndex = 0;
 
     @FXML
     public void initialize() {
@@ -45,6 +44,7 @@ public class GameController {
         if (name != null && !name.trim().isEmpty()) {
             GameManager.getInstance().setPlayerName(name);
             GameManager.getInstance().setScore(0);
+            GameManager.getInstance().setCurrentQuestionIndex(0); //reset question index to avoid conflicts
 
             nameBox.setVisible(false);
             questionBox.setVisible(true);
@@ -57,9 +57,10 @@ public class GameController {
     public void loadQuestion() {
         Quiz quiz = GameManager.getInstance().getCurrentQuiz();
 
-        if (quiz != null && currentPageIndex < quiz.getPages().size()) {
+        int currentQuestionIndex = GameManager.getInstance().getCurrentQuestionIndex();
+        if (quiz != null && currentQuestionIndex < quiz.getPages().size()) {
 
-            Page page = quiz.getPages().get(currentPageIndex);
+            Page page = quiz.getPages().get(currentQuestionIndex);
 
             if (!page.getElements().isEmpty()) {
                 Element question = page.getElements().getFirst();
@@ -74,7 +75,10 @@ public class GameController {
 
     @FXML
     public void onNextClicked() {
-        currentPageIndex++;
+        int currentQuestionIndex = GameManager.getInstance().getCurrentQuestionIndex();
+
+        GameManager.getInstance().setCurrentQuestionIndex(currentQuestionIndex + 1);
+
         loadQuestion();
     }
 
