@@ -3,19 +3,20 @@ package com.example.endassigment.model;
 import java.util.List;
 
 public class Quiz {
+    private String quizId;
     private String title;
     private String description;
     private List<Page> pages;
 
     private String completedHtml;
-    private List<CompletedHtmlCondition> completedHtmlCondition;
+    private List<CompletedHtmlOnCondition> completedHtmlOnCondition;
 
-    public Quiz(String title, String description, List<Page> pages, String completedHtml, List<CompletedHtmlCondition> completedHtmlCondition) {
+    public Quiz(String title, String description, List<Page> pages, String completedHtml, List<CompletedHtmlOnCondition> completedHtmlOnCondition) {
         this.title = title;
         this.description = description;
         this.pages = pages;
         this.completedHtml = completedHtml;
-        this.completedHtmlCondition = completedHtmlCondition;
+        this.completedHtmlOnCondition = completedHtmlOnCondition;
     }
 
     public Quiz() {
@@ -53,12 +54,20 @@ public class Quiz {
         this.completedHtml = completedHtml;
     }
 
-    public List<CompletedHtmlCondition> getCompletedHtmlCondition() {
-        return completedHtmlCondition;
+    public List<CompletedHtmlOnCondition> getCompletedHtmlOnCondition() {
+        return completedHtmlOnCondition;
     }
 
-    public void setCompletedHtmlCondition(List<CompletedHtmlCondition> completedHtmlCondition) {
-        this.completedHtmlCondition = completedHtmlCondition;
+    public void setCompletedHtmlOnCondition(List<CompletedHtmlOnCondition> completedHtmlOnCondition) {
+        this.completedHtmlOnCondition = completedHtmlOnCondition;
+    }
+
+    public String getQuizId() {
+        return quizId;
+    }
+
+    public void setQuizId(String quizId) {
+        this.quizId = quizId;
     }
 
 

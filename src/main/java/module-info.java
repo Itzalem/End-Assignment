@@ -3,6 +3,7 @@ module com.example.endassigment {
     requires javafx.fxml;
     requires com.fasterxml.jackson.annotation;
     requires com.fasterxml.jackson.databind;
+    requires com.fasterxml.jackson.datatype.jsr310;
 
 
     opens com.example.endassigment to javafx.fxml;

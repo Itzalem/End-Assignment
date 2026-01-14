@@ -7,9 +7,9 @@ public class GameManager {
 private static GameManager instance;
 
 private Quiz currentQuiz;
-        private String playerName;
-        private final IntegerProperty score = new SimpleIntegerProperty(0); //observable
-        private int currentQuestionIndex;
+private String playerName;
+private final IntegerProperty score = new SimpleIntegerProperty(0); //observable
+private int currentQuestionIndex;
 
         private GameManager() {
             this.currentQuestionIndex = 0;
@@ -29,6 +29,14 @@ private Quiz currentQuiz;
         public void setCurrentQuiz(Quiz currentQuiz) {
             this.currentQuiz = currentQuiz;
         }
+
+    public String getCurrentQuizId() {
+        if (currentQuiz != null && currentQuiz.getQuizId() != null) {
+            return currentQuiz.getQuizId();
+        }
+        return "Unknown Quiz";
+    }
+
         public String getPlayerName() {
         return playerName;
     }
@@ -60,5 +68,11 @@ private Quiz currentQuiz;
 
     public void setCurrentQuestionIndex(int currentQuestionIndex) {
         this.currentQuestionIndex = currentQuestionIndex;
+    }
+
+    public void resetGame() {
+        this.score.set(0);
+        this.currentQuestionIndex = 0;
+        this.playerName = null;
     }
 }

@@ -1,15 +1,30 @@
 package com.example.endassigment.controllers;
 
 import com.example.endassigment.model.*;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.time.LocalDateTime;
+import javafx.scene.control.Button;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.scene.Node;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 
 public class GameController {
     @FXML
@@ -17,15 +32,18 @@ public class GameController {
     @FXML
     public VBox nameBox;
     @FXML
-    public VBox questionBox;
+    public Pane questionBox;
     @FXML
     public Label labelTitle;
     @FXML
     public VBox answersBox;
     @FXML
+    public Button buttonNext;
+    @FXML
     public Label labelScore;
     @FXML
     public Label labelTimer;
+
 
     private ToggleGroup toggleGroup;
     private Element currentQuestion;
@@ -69,7 +87,14 @@ public class GameController {
         Quiz quiz = GameManager.getInstance().getCurrentQuiz();
 
         int currentQuestionIndex = GameManager.getInstance().getCurrentQuestionIndex();
+
         if (quiz != null && currentQuestionIndex < quiz.getPages().size()) {
+
+            if (currentQuestionIndex == quiz.getPages().size() - 1) {
+                buttonNext.setText("Finish Quiz");
+            } else {
+                buttonNext.setText("Next");
+            }
 
             Page page = quiz.getPages().get(currentQuestionIndex);
 
@@ -107,7 +132,7 @@ public class GameController {
             if (timeSeconds <= 0) {
                 timeline.stop();
 
-                onNextClicked();
+                onNextClicked(new ActionEvent(buttonNext, null)); //because now this method needs an event
             }
         }));
 
@@ -116,15 +141,77 @@ public class GameController {
     }
 
     @FXML
-    public void onNextClicked() {
+    public void onNextClicked(ActionEvent event) {
         checkAnswer();
 
-        timeline.stop();
+        if (timeline != null){
+            timeline.stop();
+        }
 
+        Quiz quiz = GameManager.getInstance().getCurrentQuiz();
         int currentQuestionIndex = GameManager.getInstance().getCurrentQuestionIndex();
-        GameManager.getInstance().setCurrentQuestionIndex(currentQuestionIndex + 1);
 
-        loadQuestion();
+        if (currentQuestionIndex == quiz.getPages().size() - 1) {
+            saveResults(event);
+        }
+        else {
+            GameManager.getInstance().setCurrentQuestionIndex(currentQuestionIndex + 1);
+            loadQuestion();
+        }
+
+    }
+
+    private void saveResults(ActionEvent event) {
+        try {
+            String playerName = GameManager.getInstance().getPlayerName();
+
+            int score = GameManager.getInstance().getScore();
+            int totalQuestions = GameManager.getInstance().getCurrentQuiz().getPages().size();
+
+            PlayerResult playerResult = new PlayerResult(playerName, totalQuestions, score, LocalDateTime.now());
+
+            writeJsonResult(playerResult);
+
+            changeResultsScreen();
+
+        }
+        catch (IOException ioe) {
+            ioe.printStackTrace();
+            System.out.println("Error saving results");
+        }
+    }
+
+    private void writeJsonResult(PlayerResult newResult) throws IOException {
+        String quizId = GameManager.getInstance().getCurrentQuizId();
+
+        File file = new File(quizId + "-results.json");
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        mapper.registerModule(new JavaTimeModule());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+        QuizResults quizResults;
+
+        if (file.exists()) {
+            quizResults = mapper.readValue(file, QuizResults.class);
+        }
+        else {
+            quizResults = new QuizResults();
+            quizResults.setQuizId(quizId);
+            quizResults.setName(GameManager.getInstance().getCurrentQuiz().getTitle());
+            quizResults.setPlayersResults(new ArrayList<>());
+        }
+
+        quizResults.getPlayersResults().add(newResult);
+        mapper.writeValue(file, quizResults);
+    }
+
+    private void changeResultsScreen() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/endassigment/Results.fxml"));
+        Stage stage = (Stage) buttonNext.getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     private void checkAnswer() {

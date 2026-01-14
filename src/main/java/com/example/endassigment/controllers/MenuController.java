@@ -34,8 +34,8 @@ public class MenuController {
                 GameManager.getInstance().setCurrentQuiz(quiz);
 
                 btnStartQuiz.setDisable(false);
-
-            } catch (IOException ioe) {
+            }
+            catch (IOException ioe) {
                 ioe.printStackTrace();
                 System.out.println("Error while loading JSON file.");
             }
