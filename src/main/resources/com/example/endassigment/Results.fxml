@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/17.0.12"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.endassigment.controllers.ResultsController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.endassigment.controllers.ResultsController">
 
-        <Label layoutX="207.0" layoutY="74.0" text="Thanks for playing! Look for your name and score at the bottom"/>
+        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="621.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="-21.0" AnchorPane.topAnchor="1.0">
+            <Image url="@alogo.png" />
+        </ImageView>
+
+        <Label layoutX="179.0" layoutY="74.0" text="Thanks for playing! Look for your name and score at the bottom" />
         <ScrollPane fitToWidth="true" layoutX="109.0" layoutY="111.0" prefHeight="363.0" prefWidth="581.0">
             <content>
                 <TextFlow fx:id="resultsFlow" />
             </content>
         </ScrollPane>
 
-        <Button text="Play Again" onAction="#onPlayAgainClicked" layoutX="339.0" layoutY="491.0" mnemonicParsing="false"/>
-        <Label layoutX="304.0" layoutY="14.0" styleClass="label-header" text="Results Scores " textFill="#760808"/>
+        <Button layoutX="339.0" layoutY="491.0" mnemonicParsing="false" onAction="#onPlayAgainClicked" text="Play Again" />
+        <Label layoutX="304.0" layoutY="14.0" styleClass="label-header" text="Results Scores " textFill="#760808" />
 
 </AnchorPane>

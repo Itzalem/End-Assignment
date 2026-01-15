@@ -1,9 +1,9 @@
 
 .root {
-    -fx-background-image: url("alogo.png"), url("backgroundsky.jpg");
-    -fx-background-position: top right, center center;
-    -fx-background-repeat: no-repeat, no-repeat;
-    -fx-background-size: 100px auto, cover;
+    -fx-background-image: url("backgroundsky.jpg");
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
     -fx-font-family: "Palatino Linotype", "Lucida Handwriting", cursive;
     -fx-font-size: 16px;
 }
@@ -28,9 +28,10 @@
 }
 
 .label-greeting {
-    -fx-font-family: "Berlin Sans FB", "Lucida Handwriting", cursive;
-    -fx-font-size: 42px;
-    -fx-text-fill: #012034;
+    -fx-font-family: "Rockwell", "Lucida Handwriting", cursive;
+    -fx-font-size: 52px;
+    -fx-text-fill: #f8b8c9;
+    -fx-effect: dropshadow(gaussian, #a83d5d, 2, 1.0, 0, 0);
 }
 
 .button {
