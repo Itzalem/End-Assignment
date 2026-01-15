@@ -4,14 +4,17 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.endassigment.controllers.ResultsController">
-   <children>
-      <TextArea fx:id="resultsTextArea" layoutX="40.0" layoutY="65.0" prefHeight="227.0" prefWidth="520.0" />
-      <Button layoutX="264.0" layoutY="309.0" mnemonicParsing="false" onAction="#onPlayAgainClicked" text="Play Again" />
-      <Label layoutX="204.0" layoutY="17.0" text="Results Scores " textFill="#760808">
-         <font>
-            <Font name="Segoe Print Bold" size="26.0" />
-         </font>
-      </Label>
-   </children>
+<AnchorPane prefHeight="600.0" prefWidth="800.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.endassigment.controllers.ResultsController">
+
+        <Label layoutX="207.0" layoutY="74.0" text="Thanks for playing! Look for your name and score at the bottom"/>
+        <ScrollPane fitToWidth="true" layoutX="109.0" layoutY="111.0" prefHeight="363.0" prefWidth="581.0">
+            <content>
+                <TextFlow fx:id="resultsFlow" />
+            </content>
+        </ScrollPane>
+
+        <Button text="Play Again" onAction="#onPlayAgainClicked" layoutX="339.0" layoutY="491.0" mnemonicParsing="false"/>
+        <Label layoutX="304.0" layoutY="14.0" styleClass="label-header" text="Results Scores " textFill="#760808"/>
+
 </AnchorPane>

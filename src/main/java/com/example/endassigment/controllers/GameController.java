@@ -15,14 +15,15 @@ import javafx.util.Duration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
+
 import javafx.scene.control.Button;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.scene.Node;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
@@ -43,6 +44,10 @@ public class GameController {
     public Label labelScore;
     @FXML
     public Label labelTimer;
+    @FXML
+    public Label labelQuizName;
+    @FXML
+    public Label labelProgress;
 
 
     private ToggleGroup toggleGroup;
@@ -57,13 +62,15 @@ public class GameController {
 
         Quiz quiz = GameManager.getInstance().getCurrentQuiz();
 
-        if (quiz != null) {
-            System.out.println("Game on" + quiz.getTitle());
+        if (labelQuizName != null) {
+            labelQuizName.setText(quiz.getTitle());
         }
 
         labelScore.textProperty().bind(
                 GameManager.getInstance().scoreProperty().asString("Score: %d")
         );
+
+        updateProgressLabel();
     }
 
     @FXML
@@ -92,7 +99,8 @@ public class GameController {
 
             if (currentQuestionIndex == quiz.getPages().size() - 1) {
                 buttonNext.setText("Finish Quiz");
-            } else {
+            }
+            else {
                 buttonNext.setText("Next");
             }
 
@@ -126,7 +134,7 @@ public class GameController {
 
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             timeSeconds--;
-            labelTimer.setText("" + timeSeconds);
+            labelTimer.setText("Time Left: " + timeSeconds);
 
             //if 0 go to next question
             if (timeSeconds <= 0) {
@@ -144,7 +152,7 @@ public class GameController {
     public void onNextClicked(ActionEvent event) {
         checkAnswer();
 
-        if (timeline != null){
+        if (timeline != null) {
             timeline.stop();
         }
 
@@ -243,7 +251,6 @@ public class GameController {
             if (question.isCorrectAnswer() && questionAnswer.equals(question.getLabelTrue())) {
                 isCorrect = true;
             }
-
             else if (!question.isCorrectAnswer() && questionAnswer.equals(question.getLabelFalse())) {
                 isCorrect = true;
             }
@@ -301,7 +308,17 @@ public class GameController {
 
             answersBox.getChildren().add(buttonFalse);
         }
+
+        updateProgressLabel();
     }
 
+    private void updateProgressLabel() {
+        GameManager gameManager = GameManager.getInstance();
+
+        int totalQuestions = gameManager.getCurrentQuiz().getPages().size();
+        int currentQuestionIndex = gameManager.getCurrentQuestionIndex() + 1;
+
+        labelProgress.setText("Question " + currentQuestionIndex + "/" + totalQuestions);
+    }
 }
 

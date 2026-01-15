@@ -1,0 +1,122 @@
+
+.root {
+    -fx-background-image: url("alogo.png"), url("backgroundsky.jpg");
+    -fx-background-position: top right, center center;
+    -fx-background-repeat: no-repeat, no-repeat;
+    -fx-background-size: 100px auto, cover;
+    -fx-font-family: "Palatino Linotype", "Lucida Handwriting", cursive;
+    -fx-font-size: 16px;
+}
+
+.label {
+    -fx-text-fill: #053780;
+}
+
+.label-header {
+    -fx-font-size: 30px;
+    -fx-font-family: "Palatino Linotype", cursive;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0D47A1;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 1);
+}
+
+.label-special {
+    -fx-font-family: "Palatino Linotype", "Lucida Handwriting", cursive;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+    -fx-text-fill: #012034;
+}
+
+.label-greeting {
+    -fx-font-family: "Berlin Sans FB", "Lucida Handwriting", cursive;
+    -fx-font-size: 42px;
+    -fx-text-fill: #012034;
+}
+
+.button {
+    -fx-background-color: #1976D2;
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: #1565C0;
+    -fx-padding: 8 20 8 20;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+}
+
+.button:hover {
+    -fx-background-color: #2196F3;
+    -fx-effect: dropshadow(three-pass-box, rgba(25, 118, 210, 0.4), 10, 0, 0, 2);
+    -fx-translate-y: -2;
+}
+
+.button:pressed {
+    -fx-background-color: #0D47A1;
+    -fx-translate-y: 1;
+}
+
+.button:disabled {
+    -fx-background-color: #CFD8DC;
+    -fx-border-color: #B0BEC5;
+    -fx-text-fill: #78909C;
+    -fx-opacity: 0.8;
+}
+
+.text-field, .text-area {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-color: #90CAF9;
+    -fx-border-radius: 10;
+    -fx-prompt-text-fill: #90A4AE;
+    -fx-text-fill: #37474F;
+    -fx-font-family: "Palatino Linotype", sans-serif;
+}
+
+.text-field:focused, .text-area:focused {
+    -fx-border-color: #1976D2;
+    -fx-effect: dropshadow(three-pass-box, rgba(25, 118, 210, 0.2), 5, 0, 0, 0);
+}
+
+.radio-button {
+    -fx-text-fill: #01579B;
+    -fx-padding: 5;
+}
+
+.radio-button .radio {
+    -fx-background-color: white;
+    -fx-border-color: #1976D2;
+    -fx-border-radius: 10px;
+}
+
+.radio-button:selected .radio .dot {
+    -fx-background-color: #1976D2;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+#resultsFlow {
+    -fx-background-color: rgba(255, 255, 255, 0.7);
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-border-color: #4FC3F7;
+    -fx-border-width: 2px;
+    -fx-padding: 20;
+    -fx-font-family: "Palatino Linotype", cursive;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #81D4FA;
+    -fx-background-radius: 10;
+}
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #29B6F6;
+}
+.scroll-bar:vertical {
+    -fx-background-color: transparent;
+}

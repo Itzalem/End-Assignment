@@ -4,31 +4,30 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 public class GameManager {
-private static GameManager instance;
+    private static GameManager instance;
+    private Quiz currentQuiz;
+    private String playerName;
+    private final IntegerProperty score = new SimpleIntegerProperty(0); //observable
+    private int currentQuestionIndex;
 
-private Quiz currentQuiz;
-private String playerName;
-private final IntegerProperty score = new SimpleIntegerProperty(0); //observable
-private int currentQuestionIndex;
+    private GameManager() {
+        this.currentQuestionIndex = 0;
+    }
 
-        private GameManager() {
-            this.currentQuestionIndex = 0;
+    public static GameManager getInstance() {
+        if (instance == null) {
+            instance = new GameManager();
         }
+        return instance;
+    }
 
-        public static GameManager getInstance() {
-            if (instance == null) {
-                instance = new GameManager();
-            }
-            return instance;
-        }
+    public Quiz getCurrentQuiz() {
+        return currentQuiz;
+    }
 
-        public Quiz getCurrentQuiz() {
-            return currentQuiz;
-        }
-
-        public void setCurrentQuiz(Quiz currentQuiz) {
-            this.currentQuiz = currentQuiz;
-        }
+    public void setCurrentQuiz(Quiz currentQuiz) {
+        this.currentQuiz = currentQuiz;
+    }
 
     public String getCurrentQuizId() {
         if (currentQuiz != null && currentQuiz.getQuizId() != null) {
@@ -37,7 +36,7 @@ private int currentQuestionIndex;
         return "Unknown Quiz";
     }
 
-        public String getPlayerName() {
+    public String getPlayerName() {
         return playerName;
     }
 

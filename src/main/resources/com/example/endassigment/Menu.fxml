@@ -3,24 +3,23 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.endassigment.controllers.MenuController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.endassigment.controllers.MenuController">
 
-      <HBox alignment="CENTER" layoutX="184.0" layoutY="150.0" prefHeight="100.0" prefWidth="200.0">
+    <HBox alignment="CENTER" layoutX="132.0" layoutY="189.0" prefHeight="100.0" prefWidth="534.0">
 
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onLoadQuiz" text="Load Quiz">
-         <HBox.margin>
-            <Insets right="40.0" />
-         </HBox.margin></Button>
-            <Button fx:id="btnStartQuiz" disable="true" mnemonicParsing="false" onAction="#onStartQuiz" text="Start Quiz" />
+        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onLoadQuiz" prefHeight="43.0" prefWidth="121.0" text="Load Quiz">
+            <HBox.margin>
+                <Insets right="40.0" />
+            </HBox.margin>
+        </Button>
 
-      </HBox>
-   <Label layoutX="174.0" layoutY="48.0" text="Welcome to the Quiz ">
-      <font>
-         <Font name="System Bold Italic" size="22.0" />
-      </font></Label>
-   <Label layoutX="203.0" layoutY="95.0" text="Please load your quizz to start " />
-   <Label fx:id="labelQuizLoaded" alignment="CENTER" contentDisplay="CENTER" layoutX="173.0" layoutY="262.0" prefHeight="18.0" prefWidth="221.0" text="Quiz Title" textAlignment="CENTER" visible="false" />
+        <Button fx:id="btnStartQuiz" disable="true" mnemonicParsing="false" onAction="#onStartQuiz" prefHeight="43.0" prefWidth="119.0" text="Start Quiz" />
+    </HBox>
 
+    <Label layoutX="214.0" layoutY="60.0" styleClass="label-greeting" text="Welcome to Quizix!" />
+
+    <Label alignment="CENTER" contentDisplay="CENTER" layoutX="291.0" layoutY="167.0" text="Please load your quiz to start " textAlignment="CENTER" />
+
+    <Label fx:id="labelQuizLoaded" alignment="CENTER" layoutX="36.0" layoutY="314.0" prefHeight="100.0" prefWidth="734.0" styleClass="label-header" text="Quiz Title" visible="false" />
 </AnchorPane>

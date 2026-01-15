@@ -30,15 +30,15 @@ public class BooleanElement extends Element {
         this.correctAnswer = correctAnswer;
     }
 
-public BooleanElement(String labelTrue, String labelFalse, boolean correctAnswer) {
-    this.labelTrue = labelTrue;
-    this.labelFalse = labelFalse;
-    this.correctAnswer = correctAnswer;
-}
+    public BooleanElement(String labelTrue, String labelFalse, boolean correctAnswer) {
+        this.labelTrue = labelTrue;
+        this.labelFalse = labelFalse;
+        this.correctAnswer = correctAnswer;
+    }
 
-public BooleanElement() {
+    public BooleanElement() {
 
-}
+    }
 
 }
 
