@@ -7,13 +7,14 @@ public class GameManager {
     private static GameManager instance;
     private Quiz currentQuiz;
     private String playerName;
-    private final IntegerProperty score = new SimpleIntegerProperty(0); //observable
+    private final IntegerProperty score = new SimpleIntegerProperty(0); ///observable
     private int currentQuestionIndex;
 
     private GameManager() {
         this.currentQuestionIndex = 0;
     }
 
+    ///Singleton Pattern implementation for the game manager
     public static GameManager getInstance() {
         if (instance == null) {
             instance = new GameManager();
@@ -52,7 +53,7 @@ public class GameManager {
         this.score.set(score);
     }
 
-
+    //observable for score
     public IntegerProperty scoreProperty() {
         return score;
     }

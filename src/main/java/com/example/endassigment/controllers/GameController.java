@@ -1,6 +1,13 @@
 package com.example.endassigment.controllers;
 
-import com.example.endassigment.model.*;
+import com.example.endassigment.model.Element;
+import com.example.endassigment.model.GameManager;
+import com.example.endassigment.model.Page;
+import com.example.endassigment.model.Quiz;
+import com.example.endassigment.model.PlayerResult;
+import com.example.endassigment.model.QuizResults;
+import com.example.endassigment.model.RadiogroupElement;
+import com.example.endassigment.model.BooleanElement;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -44,9 +51,7 @@ public class GameController {
     @FXML
     public Label labelProgress;
 
-
     private ToggleGroup toggleGroup;
-    private Element currentQuestion;
     private Timeline timeline;
     private int timeSeconds;
 
@@ -61,6 +66,7 @@ public class GameController {
             labelQuizName.setText(quiz.getTitle());
         }
 
+        ///to bind the score label to the observable in Game manager, updates the view automatically
         labelScore.textProperty().bind(
                 GameManager.getInstance().scoreProperty().asString("Score: %d")
         );
@@ -75,7 +81,7 @@ public class GameController {
         if (name != null && !name.trim().isEmpty()) {
             GameManager.getInstance().setPlayerName(name);
             GameManager.getInstance().setScore(0);
-            GameManager.getInstance().setCurrentQuestionIndex(0); //reset question index to avoid conflicts
+            GameManager.getInstance().setCurrentQuestionIndex(0); ///reset question index to avoid conflicts
 
             nameBox.setVisible(false);
             questionBox.setVisible(true);
@@ -91,7 +97,7 @@ public class GameController {
         int currentQuestionIndex = GameManager.getInstance().getCurrentQuestionIndex();
 
         if (quiz != null && currentQuestionIndex < quiz.getPages().size()) {
-
+           ///if its the last question the button changes to finish quiz
             if (currentQuestionIndex == quiz.getPages().size() - 1) {
                 buttonNext.setText("Finish Quiz");
             }
@@ -99,6 +105,7 @@ public class GameController {
                 buttonNext.setText("Next");
             }
 
+            /// load the question, timer and answers
             Page page = quiz.getPages().get(currentQuestionIndex);
 
             int limit = page.getTimeLimit();
@@ -125,17 +132,18 @@ public class GameController {
         }
 
         this.timeSeconds = seconds;
-        labelTimer.setText("" + timeSeconds);
+        labelTimer.setText("Time Left: " + timeSeconds);
 
+        /// reduce seconds one by one while updating the label
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             timeSeconds--;
             labelTimer.setText("Time Left: " + timeSeconds);
 
-            //if 0 go to next question
+            ///if time is 0 go to next question using the same method as the "next" button.
             if (timeSeconds <= 0) {
                 timeline.stop();
 
-                onNextClicked(new ActionEvent(buttonNext, null)); //because now this method needs an event
+                onNextClicked(new ActionEvent(buttonNext, null)); ///a fake event to be able to call the method
             }
         }));
 
@@ -154,6 +162,7 @@ public class GameController {
         Quiz quiz = GameManager.getInstance().getCurrentQuiz();
         int currentQuestionIndex = GameManager.getInstance().getCurrentQuestionIndex();
 
+        ///if last question save the results, if not go to next question
         if (currentQuestionIndex == quiz.getPages().size() - 1) {
             saveResults(event);
         }
@@ -164,6 +173,7 @@ public class GameController {
 
     }
 
+    ///loads existing results, and calls other method to append new result and write them back to the file
     private void saveResults(ActionEvent event) {
         try {
             String playerName = GameManager.getInstance().getPlayerName();
@@ -173,8 +183,8 @@ public class GameController {
 
             PlayerResult playerResult = new PlayerResult(playerName, totalQuestions, score, LocalDateTime.now());
 
-            writeResultsToJson(playerResult);
-            changeResultsScreen();
+            writeResultsToJson(playerResult); ///here the new resuslt is written to the file
+            changeResultsScreen(); ///here changes to the final results screen
         }
         catch (IOException ioe) {
             ioe.printStackTrace();
@@ -197,13 +207,14 @@ public class GameController {
         if (file.exists()) {
             quizResults = mapper.readValue(file, QuizResults.class);
         }
-        else {
+        else { ///if the file does not exist will create a new Quiz results object
             quizResults = new QuizResults();
             quizResults.setQuizId(quizId);
             quizResults.setName(GameManager.getInstance().getCurrentQuiz().getTitle());
             quizResults.setPlayersResults(new ArrayList<>());
         }
 
+        ///where it actually writes the new result
         quizResults.getPlayersResults().add(newResult);
         mapper.writeValue(file, quizResults);
     }
@@ -219,6 +230,70 @@ public class GameController {
         stage.show();
     }
 
+    @FXML
+    private void displayQuestion(Element question) {
+        labelTitle.setText(question.getTitle());
+
+        answersBox.getChildren().clear(); ///to delete previous answers
+
+        toggleGroup = new ToggleGroup(); ///if you select one the other gets deselected
+
+        if (question instanceof RadiogroupElement) {
+            createRadiogroupQuestion(question);
+        }
+        else if (question instanceof BooleanElement) {
+            createBooleanQuestion(question);
+        }
+
+        updateProgressLabel(); ///question n/total label updates
+    }
+
+    private void createRadiogroupQuestion(Element question) {
+        RadiogroupElement radiogroupQuestion = (RadiogroupElement) question;
+
+        if (radiogroupQuestion.getChoices() != null) {
+            for (String textOption : radiogroupQuestion.getChoices()) {
+                RadioButton button = new RadioButton(textOption);
+                button.setToggleGroup(toggleGroup);
+
+                answersBox.getChildren().add(button);
+            }
+        }
+        else {
+            Label labelError = new Label("Ups, no options for this question. Continue to the next one please.");
+            answersBox.getChildren().add(labelError);
+        }
+    }
+
+    private void createBooleanQuestion(Element question) {
+        BooleanElement boolQuestion = (BooleanElement) question;
+
+        String textTrue = boolQuestion.getLabelTrue();
+        if (textTrue == null) textTrue = "True";
+
+        String textFalse = boolQuestion.getLabelFalse();
+        if (textFalse == null) textFalse = "False";
+
+        RadioButton buttonTrue = new RadioButton(textTrue);
+        buttonTrue.setToggleGroup(toggleGroup);
+
+        answersBox.getChildren().add(buttonTrue);
+
+        RadioButton buttonFalse = new RadioButton(textFalse);
+        buttonFalse.setToggleGroup(toggleGroup);
+
+        answersBox.getChildren().add(buttonFalse);
+    }
+
+    private void updateProgressLabel() {
+        GameManager gameManager = GameManager.getInstance();
+
+        int totalQuestions = gameManager.getCurrentQuiz().getPages().size();
+        int currentQuestionIndex = gameManager.getCurrentQuestionIndex() + 1;
+
+        labelProgress.setText("Question " + currentQuestionIndex + "/" + totalQuestions);
+    }
+
     private void checkAnswer() {
         boolean isCorrect = false;
 
@@ -226,6 +301,7 @@ public class GameController {
             return;
         }
 
+        ///get selected answer by the user
         RadioButton selectedRadioAnswer = (RadioButton) toggleGroup.getSelectedToggle();
         String questionAnswer = selectedRadioAnswer.getText();
 
@@ -233,6 +309,7 @@ public class GameController {
                 .getPages().get(GameManager.getInstance().getCurrentQuestionIndex())
                 .getElements().getFirst();
 
+        ///check if its correct depending on the type of question
         if (currentQuestion instanceof RadiogroupElement) {
             RadiogroupElement question = (RadiogroupElement) currentQuestion;
 
@@ -251,69 +328,10 @@ public class GameController {
             }
         }
 
+        ///add to the score if correct
         if (isCorrect) {
             GameManager.getInstance().addScore(1);
         }
-    }
-
-    @FXML
-    private void displayQuestion(Element question) {
-        this.currentQuestion = question;
-
-        labelTitle.setText(question.getTitle());
-
-        answersBox.getChildren().clear(); //to delete previous answers
-
-        toggleGroup = new ToggleGroup(); //if you select one the other gets deselected
-
-        //radiogorup question
-        if (question instanceof RadiogroupElement) {
-            RadiogroupElement radiogroupQuestion = (RadiogroupElement) question;
-
-            if (radiogroupQuestion.getChoices() != null) {
-                for (String textOption : radiogroupQuestion.getChoices()) {
-                    RadioButton button = new RadioButton(textOption);
-                    button.setToggleGroup(toggleGroup);
-
-                    answersBox.getChildren().add(button);
-                }
-            }
-            else {
-                Label labelError = new Label("Ups, no options for this question. Continue to the next one please.");
-                answersBox.getChildren().add(labelError);
-            }
-        }
-        //boolean question
-        else if (question instanceof BooleanElement) {
-            BooleanElement boolQuestion = (BooleanElement) question;
-
-            String textTrue = boolQuestion.getLabelTrue();
-            if (textTrue == null) textTrue = "True";
-
-            String textFalse = boolQuestion.getLabelFalse();
-            if (textFalse == null) textFalse = "False";
-
-            RadioButton buttonTrue = new RadioButton(textTrue);
-            buttonTrue.setToggleGroup(toggleGroup);
-
-            answersBox.getChildren().add(buttonTrue);
-
-            RadioButton buttonFalse = new RadioButton(textFalse);
-            buttonFalse.setToggleGroup(toggleGroup);
-
-            answersBox.getChildren().add(buttonFalse);
-        }
-
-        updateProgressLabel();
-    }
-
-    private void updateProgressLabel() {
-        GameManager gameManager = GameManager.getInstance();
-
-        int totalQuestions = gameManager.getCurrentQuiz().getPages().size();
-        int currentQuestionIndex = gameManager.getCurrentQuestionIndex() + 1;
-
-        labelProgress.setText("Question " + currentQuestionIndex + "/" + totalQuestions);
     }
 }
 

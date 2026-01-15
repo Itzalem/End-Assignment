@@ -28,12 +28,13 @@ public class MenuController {
 
     @FXML
     public void onLoadQuiz() {
+        ///select file to load
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
         File selectedFile = fileChooser.showOpenDialog(null);
 
         if (selectedFile != null) {
-            //existing but empty file
+            ///existing but empty file
             if (selectedFile.length() == 0) {
                 labelQuizLoaded.setText("Sorry, the file you selected is empty. Try a new one please.");
                 labelQuizLoaded.setVisible(true);
@@ -43,15 +44,16 @@ public class MenuController {
             try {
                 ObjectMapper mapper = new ObjectMapper();
 
-                //for the factory deserializer
+                ///for the factory deserializer
                 SimpleModule module = new SimpleModule();
-                module.addDeserializer(Element.class, new ElementDeserializer());
+                module.addDeserializer(Element.class, new ElementDeserializer()); ///will use ElementFactory to create the right element type of object
                 mapper.registerModule(module);
 
                 Quiz quiz = mapper.readValue(selectedFile, Quiz.class);
 
                 GameManager.getInstance().setCurrentQuiz(quiz);
 
+                ///view updates and user can play
                 btnStartQuiz.setDisable(false);
                 labelQuizLoaded.setText("Ready to Play: " + GameManager.getInstance().getCurrentQuiz().getTitle());
                 labelQuizLoaded.setVisible(true);

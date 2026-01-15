@@ -36,11 +36,13 @@ public class ResultsController {
                     resultsFlow.getChildren().add(new Text("Sorry, the results file is empty. Please restart the quiz"));
                     return;
                 }
+
                 ObjectMapper mapper = new ObjectMapper();
-                mapper.registerModule(new JavaTimeModule());
+                mapper.registerModule(new JavaTimeModule()); ///just for LocalDateTime
 
                 QuizResults quizResults = mapper.readValue(file, QuizResults.class);
 
+                ///display of the results by player in the view (text flow part)
                 for (PlayerResult player : quizResults.getPlayersResults()) {
                     Text playerName = new Text("Player: " + player.getPlayerName() + "\n");
                     playerName.setStyle("-fx-font-weight: bold; -fx-fill: red; -fx-font-size: 15px;");
@@ -52,7 +54,6 @@ public class ResultsController {
                     Text playerInfo = new Text(resultsOverview);
 
                     Text separator = new Text("-------------\n");
-                    //separator.setStyle("-fx-fill: grey;");
 
                     resultsFlow.getChildren().addAll(playerName, playerInfo, separator);
                 }
