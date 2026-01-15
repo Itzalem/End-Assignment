@@ -1,19 +1,5 @@
 package com.example.endassigment.model;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type"
-)
-
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = RadiogroupElement.class, name = "radiogroup"),
-        @JsonSubTypes.Type(value = BooleanElement.class, name = "boolean")
-})
-
 public class Element {
     private String type;
     private String name;

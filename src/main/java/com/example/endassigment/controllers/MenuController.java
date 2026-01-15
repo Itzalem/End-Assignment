@@ -1,8 +1,11 @@
 package com.example.endassigment.controllers;
 
+import com.example.endassigment.model.Element;
+import com.example.endassigment.model.ElementDeserializer;
 import com.example.endassigment.model.GameManager;
 import com.example.endassigment.model.Quiz;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -39,6 +42,12 @@ public class MenuController {
 
             try {
                 ObjectMapper mapper = new ObjectMapper();
+
+                //for the factory deserializer
+                SimpleModule module = new SimpleModule();
+                module.addDeserializer(Element.class, new ElementDeserializer());
+                mapper.registerModule(module);
+
                 Quiz quiz = mapper.readValue(selectedFile, Quiz.class);
 
                 GameManager.getInstance().setCurrentQuiz(quiz);
