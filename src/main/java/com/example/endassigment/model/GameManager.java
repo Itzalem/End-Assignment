@@ -9,6 +9,7 @@ public class GameManager {
     private String playerName;
     private final IntegerProperty score = new SimpleIntegerProperty(0); ///observable
     private int currentQuestionIndex;
+    private boolean quizPlaying = false;
 
     private GameManager() {
         this.currentQuestionIndex = 0;
@@ -74,5 +75,13 @@ public class GameManager {
         this.score.set(0);
         this.currentQuestionIndex = 0;
         this.playerName = null;
+    }
+
+    public boolean isQuizPlaying() {
+        return quizPlaying;
+    }
+
+    public void setQuizPlaying(boolean quizPlaying) {
+        this.quizPlaying = quizPlaying;
     }
 }

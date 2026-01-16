@@ -4,6 +4,7 @@ import com.example.endassigment.model.Element;
 import com.example.endassigment.model.ElementDeserializer;
 import com.example.endassigment.model.GameManager;
 import com.example.endassigment.model.Quiz;
+import com.example.endassigment.model.Page;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import javafx.event.ActionEvent;
@@ -19,6 +20,9 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+
+import static java.util.Collections.shuffle;
 
 public class MenuController {
     @FXML
@@ -51,6 +55,18 @@ public class MenuController {
 
                 Quiz quiz = mapper.readValue(selectedFile, Quiz.class);
 
+                if (quiz.getPages() != null && quiz.getRandomQuestionCount() > 0 &&  ///if its not in the json file it will be 0
+                        quiz.getRandomQuestionCount() <= quiz.getPages().size()) {
+
+                    ///random selection of the questions
+                    shuffle(quiz.getPages());
+
+                    List<Page> randomQuestionSet = quiz.getPages().subList(0, quiz.getRandomQuestionCount());
+
+                    ///only the random questions are going in the quiz now
+                    quiz.setPages(new java.util.ArrayList<>(randomQuestionSet));
+                }
+
                 GameManager.getInstance().setCurrentQuiz(quiz);
 
                 ///view updates and user can play
@@ -68,6 +84,8 @@ public class MenuController {
 
     @FXML
     public void onStartQuiz(ActionEvent event) throws IOException {
+        GameManager.getInstance().setQuizPlaying(true); ///to start the quiz
+
         Parent root = FXMLLoader.load(getClass().getResource("/com/example/endassigment/Game.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));

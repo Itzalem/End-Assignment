@@ -11,12 +11,17 @@ public class Quiz {
     private String completedHtml;
     private List<CompletedHtmlOnCondition> completedHtmlOnCondition;
 
+    private boolean allowRetry;
+    private int randomQuestionCount;
+
     public Quiz(String title, String description, List<Page> pages, String completedHtml, List<CompletedHtmlOnCondition> completedHtmlOnCondition) {
         this.title = title;
         this.description = description;
         this.pages = pages;
         this.completedHtml = completedHtml;
         this.completedHtmlOnCondition = completedHtmlOnCondition;
+        this.allowRetry = allowRetry;
+        this.randomQuestionCount = randomQuestionCount;
     }
 
     public Quiz() {
@@ -68,6 +73,22 @@ public class Quiz {
 
     public void setQuizId(String quizId) {
         this.quizId = quizId;
+    }
+
+    public boolean isAllowRetry() {
+        return allowRetry;
+    }
+
+    public void setAllowRetry(boolean allowRetry) {
+        this.allowRetry = allowRetry;
+    }
+
+    public int getRandomQuestionCount() {
+        return randomQuestionCount;
+    }
+
+    public void setRandomQuestionCount(int randomQuestionCount) {
+        this.randomQuestionCount = randomQuestionCount;
     }
 
 

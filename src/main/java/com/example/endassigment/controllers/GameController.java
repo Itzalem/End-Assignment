@@ -153,13 +153,23 @@ public class GameController {
 
     @FXML
     public void onNextClicked(ActionEvent event) {
-        checkAnswer();
+        boolean isCorrectAnswer = checkAnswer();
+
+        Quiz quiz = GameManager.getInstance().getCurrentQuiz();
+
+       ///retry is allowed and the user anwer was incorrect
+        if (quiz.isAllowRetry() && !isCorrectAnswer) {
+
+            Label errorLabel = new Label("Ups, wrong answer. Please try again.");
+            answersBox.getChildren().add(errorLabel);
+
+            return;
+        }
 
         if (timeline != null) {
             timeline.stop();
         }
 
-        Quiz quiz = GameManager.getInstance().getCurrentQuiz();
         int currentQuestionIndex = GameManager.getInstance().getCurrentQuestionIndex();
 
         ///if last question save the results, if not go to next question
@@ -176,6 +186,8 @@ public class GameController {
     ///loads existing results, and calls other method to append new result and write them back to the file
     private void saveResults(ActionEvent event) {
         try {
+            GameManager.getInstance().setQuizPlaying(false);///to stop the quiz
+
             String playerName = GameManager.getInstance().getPlayerName();
 
             int score = GameManager.getInstance().getScore();
@@ -294,11 +306,11 @@ public class GameController {
         labelProgress.setText("Question " + currentQuestionIndex + "/" + totalQuestions);
     }
 
-    private void checkAnswer() {
+    private boolean checkAnswer() {
         boolean isCorrect = false;
 
         if (toggleGroup.getSelectedToggle() == null) {
-            return;
+            return false;
         }
 
         ///get selected answer by the user
@@ -332,6 +344,8 @@ public class GameController {
         if (isCorrect) {
             GameManager.getInstance().addScore(1);
         }
+
+        return isCorrect;
     }
 }
 
